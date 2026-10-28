@@ -1,5 +1,10 @@
-"""Track applicants and shortlist candidates against a salary limit."""
+"""Track applicants and shortlist candidates against a salary limit.
 
+Student: Aaryan Dubey
+SRN: PES2UG24CS016
+"""
+
+import csv
 import sqlite3
 
 connection = sqlite3.connect(":memory:")
@@ -41,10 +46,12 @@ def update_status(applicant_id, status):
 
 
 def export_report(path):
-    f = open(path, "w")
-    for row in connection.execute("SELECT name, role, status FROM applicants"):
-        f.write(",".join(row) + "\n")
-    f.close()
+    """Write applicant names, roles, and statuses to a CSV file."""
+    with open(path, "w", newline="", encoding="utf-8") as report_file:
+        writer = csv.writer(report_file)
+        writer.writerows(
+            connection.execute("SELECT name, role, status FROM applicants")
+        )
 
 
 def count_by_status(status):
