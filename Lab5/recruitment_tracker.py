@@ -1,21 +1,30 @@
+"""Track applicants and shortlist candidates against a salary limit."""
+
 import sqlite3
 
-conn = sqlite3.connect(":memory:")
-conn.execute("CREATE TABLE applicants (id INTEGER PRIMARY KEY, name TEXT, role TEXT, expected_salary INTEGER, status TEXT)")
+connection = sqlite3.connect(":memory:")
+connection.execute(
+    "CREATE TABLE applicants ("
+    "id INTEGER PRIMARY KEY, name TEXT, role TEXT, "
+    "expected_salary INTEGER, status TEXT)"
+)
 
 
-def addApplicant(name, role, expected_salary, status="applied"):
-    conn.execute(
+def add_applicant(name, role, expected_salary, status="applied"):
+    """Add one applicant to the in-memory tracker."""
+    connection.execute(
         "INSERT INTO applicants (name, role, expected_salary, status) "
         "VALUES (?, ?, ?, ?)",
         (name, role, expected_salary, status),
     )
-    conn.commit()
+    connection.commit()
 
 
 def shortlist(role, salary_limit):
-    rows = conn.execute("SELECT name, expected_salary FROM applicants WHERE role = ?", (role,)).fetchall()
-    total_seen = len(rows)   
+    """Return applicants for a role who meet the salary limit."""
+    rows = connection.execute(
+        "SELECT name, expected_salary FROM applicants WHERE role = ?", (role,)
+    ).fetchall()
     result = []
     for name, salary in rows:
         if salary <= salary_limit:
@@ -23,29 +32,38 @@ def shortlist(role, salary_limit):
     return result
 
 
-def updateStatus(applicant_id, status):
-    conn.execute("UPDATE applicants SET status = ? WHERE id = ?", (status, applicant_id))
-    conn.commit()
+def update_status(applicant_id, status):
+    """Update the hiring status for an applicant."""
+    connection.execute(
+        "UPDATE applicants SET status = ? WHERE id = ?", (status, applicant_id)
+    )
+    connection.commit()
 
-def exportReport(path):
+
+def export_report(path):
     f = open(path, "w")
-    for row in conn.execute("SELECT name, role, status FROM applicants"):
+    for row in connection.execute("SELECT name, role, status FROM applicants"):
         f.write(",".join(row) + "\n")
     f.close()
 
 
-def countByStatus(status):
-    return conn.execute("SELECT COUNT(*) FROM applicants WHERE status = ?", (status,)).fetchone()[0]
+def count_by_status(status):
+    """Return the number of applicants with the given status."""
+    return connection.execute(
+        "SELECT COUNT(*) FROM applicants WHERE status = ?", (status,)
+    ).fetchone()[0]
 
 
 def main():
-    addApplicant("Nina", "analyst", 600000)
-    addApplicant("Omar", "analyst", 750000, "interview")
-    addApplicant("Priya", "developer", 900000)
-    updateStatus(1, "interview")
+    """Run a short example of the recruitment tracker."""
+    add_applicant("Nina", "analyst", 600000)
+    add_applicant("Omar", "analyst", 750000, "interview")
+    add_applicant("Priya", "developer", 900000)
+    update_status(1, "interview")
     print(shortlist("analyst", 650000))
-    exportReport("applicants_report.csv")
-    print(countByStatus("interview"), "in interview")
+    export_report("applicants_report.csv")
+    print(count_by_status("interview"), "in interview")
 
 
-main()
+if __name__ == "__main__":
+    main()
