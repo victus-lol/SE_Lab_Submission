@@ -1,0 +1,34 @@
+digraph UML_Use_Case_Diagram {
+	bgcolor=white rankdir=LR size="12,8"
+	node [fontname=Calibri fontsize=11]
+	edge [fontname=Calibri fontsize=10]
+	subgraph cluster_system {
+		color="#595959" fontcolor="#2F2F2F" fontsize=14 label="System Boundary: Corporate Mental Wellness and Counseling Platform" labelloc=t style=dashed
+		node [color="#4A4A4A" fillcolor="#F2F2F2" shape=ellipse style=filled]
+		UC01 [label="UC-01: Generate Anonymous Pseudo-ID"]
+		UC02 [label="UC-02: Perform Self-Assessment Stress Test"]
+		UC03 [label="UC-03: Book Confidential Counseling Session"]
+		UC04 [label="UC-04: Conduct Tele-Counseling Session"]
+		UC05 [label="UC-05: Record Anonymized Session Notes"]
+		UC06 [label="UC-06: Track Personal Wellness Metrics"]
+		UC07 [label="UC-07: Manage Availability Schedule"]
+		UC08 [label="UC-08: Validate Timezone and Availability"]
+		UC09 [label="UC-09: Trigger Emergency Crisis Protocol" color="#595959" fillcolor="#E8E8E8"]
+		UC10 [label="UC-10: Reschedule / Cancel Booking"]
+	}
+	Emp [label="Corporate Employee\n(Primary Actor)" color="#4A4A4A" fillcolor="#E8E8E8" shape=box style=filled]
+	Therapist [label="Licensed Therapist\n(Primary Actor)" color="#4A4A4A" fillcolor="#E8E8E8" shape=box style=filled]
+	Admin [label="System Administrator\n(Secondary Actor)" color="#777777" fillcolor="#F2F2F2" shape=box style=filled]
+	Emp -> UC02 [color="#4A4A4A"]
+	Emp -> UC03 [color="#4A4A4A"]
+	Emp -> UC04 [color="#4A4A4A"]
+	Emp -> UC06 [color="#4A4A4A"]
+	Therapist -> UC04 [color="#4A4A4A"]
+	Therapist -> UC05 [color="#4A4A4A"]
+	Therapist -> UC07 [color="#4A4A4A"]
+	Admin -> UC01 [color="#777777"]
+	UC03 -> UC01 [label="<<include>>" arrowhead=open color="#595959" style=dashed]
+	UC03 -> UC08 [label="<<include>>" arrowhead=open color="#595959" style=dashed]
+	UC09 -> UC02 [label="<<extend>>\n[Score >= 15]" arrowhead=open color="#595959" style=dashed]
+	UC10 -> UC03 [label="<<extend>>\n[Schedule Conflict]" arrowhead=open color="#595959" style=dashed]
+}

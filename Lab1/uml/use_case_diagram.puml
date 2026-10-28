@@ -1,0 +1,55 @@
+' Use Case Diagram for Lab 1 - PES2UG24CS016
+' Problem Statement 14 - Corporate Mental Wellness Platform
+' Created in PlantUML - grey theme for submission
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+    BackgroundColor #F2F2F2
+    BorderColor #4A4A4A
+    FontName Calibri
+    FontSize 12
+}
+skinparam actor {
+    BackgroundColor #E8E8E8
+    BorderColor #4A4A4A
+}
+skinparam rectangle {
+    BorderColor #595959
+    FontName Calibri
+}
+
+actor "Corporate Employee" as emp
+actor "Licensed Therapist" as therapist
+actor "System Administrator" as admin
+
+rectangle "Corporate Mental Wellness and Counseling Platform" {
+    usecase "UC-01: Generate Anonymous Pseudo-ID" as UC01
+    usecase "UC-02: Perform Self-Assessment Stress Test" as UC02
+    usecase "UC-03: Book Confidential Counseling Session" as UC03
+    usecase "UC-04: Conduct Tele-Counseling Session" as UC04
+    usecase "UC-05: Record Anonymized Session Notes" as UC05
+    usecase "UC-06: Track Personal Wellness Metrics" as UC06
+    usecase "UC-07: Manage Therapist Availability Schedule" as UC07
+    usecase "UC-08: Validate Timezone and Slot Availability" as UC08
+    usecase "UC-09: Trigger Emergency Crisis Protocol" as UC09
+    usecase "UC-10: Reschedule / Cancel Booking" as UC10
+
+    emp --> UC02
+    emp --> UC03
+    emp --> UC04
+    emp --> UC06
+
+    therapist --> UC04
+    therapist --> UC05
+    therapist --> UC07
+
+    admin --> UC01
+
+    UC03 ..> UC01 : <<include>>
+    UC03 ..> UC08 : <<include>>
+    UC09 ..> UC02 : <<extend>> \n [Stress Score >= 15]
+    UC10 ..> UC03 : <<extend>> \n [Schedule Conflict]
+}
+@enduml
