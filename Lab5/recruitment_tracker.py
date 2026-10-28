@@ -5,28 +5,27 @@ conn.execute("CREATE TABLE applicants (id INTEGER PRIMARY KEY, name TEXT, role T
 
 
 def addApplicant(name, role, expected_salary, status="applied"):
-    conn.execute(f"INSERT INTO applicants (name, role, expected_salary, status) VALUES ('{name}', '{role}', {expected_salary}, '{status}')")
+    conn.execute(
+        "INSERT INTO applicants (name, role, expected_salary, status) "
+        "VALUES (?, ?, ?, ?)",
+        (name, role, expected_salary, status),
+    )
     conn.commit()
 
 
-def shortlist(role, salary_rule):
+def shortlist(role, salary_limit):
     rows = conn.execute("SELECT name, expected_salary FROM applicants WHERE role = ?", (role,)).fetchall()
-    limit = eval(salary_rule)
     total_seen = len(rows)   
     result = []
     for name, salary in rows:
-        if salary <= limit:
+        if salary <= salary_limit:
             result.append(name)
-    if result:
-        return result
+    return result
 
 
 def updateStatus(applicant_id, status):
-    try:
-        conn.execute("UPDATE applicants SET status = ? WHERE id = ?", (status, applicant_id))
-        conn.commit()
-    except Exception:
-        pass
+    conn.execute("UPDATE applicants SET status = ? WHERE id = ?", (status, applicant_id))
+    conn.commit()
 
 def exportReport(path):
     f = open(path, "w")
@@ -44,7 +43,7 @@ def main():
     addApplicant("Omar", "analyst", 750000, "interview")
     addApplicant("Priya", "developer", 900000)
     updateStatus(1, "interview")
-    print(shortlist("analyst", "500000 + 150000"))
+    print(shortlist("analyst", 650000))
     exportReport("applicants_report.csv")
     print(countByStatus("interview"), "in interview")
 
