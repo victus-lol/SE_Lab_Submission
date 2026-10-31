@@ -1,0 +1,9 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: C:\Users\Aarya\Downloads\sem-5\SE\Lab-6\L6_L7_14_library_fines\Lab 6
+plugins: anyio-4.15.1
+collected 5 items
+
+CodeCoverageTest_016_library_fines.py .....                              [100%]
+
+============================== 5 passed in 0.05s ==============================

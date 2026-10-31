@@ -3,7 +3,7 @@
 **Student:** Aaryan Dubey  
 **SRN:** PES2UG24CS016
 
-This repository collects the submitted work for Software Engineering Labs 1-5. Each lab has its own folder.
+This repository collects the submitted work for Software Engineering Labs 1-6. Each lab has its own folder.
 
 | Folder | Contents |
 | --- | --- |
@@ -12,5 +12,6 @@ This repository collects the submitted work for Software Engineering Labs 1-5. E
 | `Lab3/` | Architecture justification and component diagram. |
 | `Lab4/` | Updated 2048 game, checks, and chat-history export. The required before/after video recordings are not present in the current files; the before recording must be made before any code changes and cannot be recreated honestly now. |
 | `Lab5/` | Recruitment tracker, issue table, reflection, and before/after Pylint, Bandit, and Flake8 reports. |
+| `Lab6/` | Library fines application, line and branch coverage tests, and the corresponding test output and reports. |
 
-The Lab 5 fix history is split into three commits for Bandit, Pylint, and Flake8.
+The Lab 5 fix history is split into three commits for Bandit, Pylint, and Flake8. Lab 6 has separate commits for line coverage and branch coverage.
